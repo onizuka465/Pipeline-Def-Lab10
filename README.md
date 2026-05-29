@@ -8,3 +8,7 @@ Não consegui instalar a biblioteca do FlashAttention no google colab.
 Nesse laboratório também é possivel responder a pergunta de caso fosse um set de tokens ainda maior do que o requisitado pelo laboratório, como 2 milhões. Banco de dados massivos podem consumir ainda muita memoria VRAM, e nem mesmo com essas ferramentas é possivel processar tantos tokens sem colapsar o uso de VRAM, neste laboratório se caso trocar a quantidade de tokens de 4096 para 10mil ou superior, o codigo dara erro de OOM (Out Of Memory) em ambos os casos de sem KV cache e com KV cache. O modelo tenta alocar mais memória do que a memória disponivel no ambiente.
 
 O motivo pelo qual a indústria precisa migrar para State Space Models como o Mamba é que mesmo o FlashAttention ainda tem complexidade O(n²) de memória em relação ao tamanho da sequência, ele só otimiza o acesso à memória SRAM da GPU, mas não elimina o problema fundamental. Com 2 milhões de tokens, mesmo com todas as otimizações, a matriz de atenção seria impossível de computar. O Mamba resolve isso com complexidade O(1) de memória, ele processa tokens sequencialmente usando um estado fixo, sem precisar armazenar toda a matriz de atenção, tornando possível processar sequências arbitrariamente longas
+
+O código é compilado no ambiente de execução do Google Colab, onde usa se as GPU's:T4 e Python 3
+
+Partes deste laboratório foram geradas/complementadas com IA, revisadas e validadas por Guilherme De Assis Rodrigues Bomfim.
