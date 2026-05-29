@@ -1,2 +1,10 @@
 # Pipeline-Def-Lab10
 Resolução de Atividade Facultativa: solução teórica
+
+
+No laboratorio, apesar do codigo não colapsar sem o uso do KV cache por conta da redução na quantidade de tokens, visto que eu diminui abaixo do requisitado pelo laboratório pois os requisitos no laboratório extrapolam os limites no ambiente de execução do colab e desconheço melhores maneiras de otimizar isto, o tempo de geração do código sem o KV cache e apenas com o uso do QLoRA, que compacta os bits de 16 para 4, demorou cerca de 7 minutos para gerar todos os tokens, com o uso do cache de memoria ativado esse tempo diminui drasticamente para 8 segundos, contudo o pico de memória ram utilizado não teve uma diferença drástica, com uma diferença em media de 200mb a menos utilizando o KV cache.
+Não consegui instalar a biblioteca do FlashAttention no google colab.
+
+Nesse laboratório também é possivel responder a pergunta de caso fosse um set de tokens ainda maior do que o requisitado pelo laboratório, como 2 milhões. Banco de dados massivos podem consumir ainda muita memoria VRAM, e nem mesmo com essas ferramentas é possivel processar tantos tokens sem colapsar o uso de VRAM, neste laboratório se caso trocar a quantidade de tokens de 4096 para 10mil ou superior, o codigo dara erro de OOM (Out Of Memory) em ambos os casos de sem KV cache e com KV cache. O modelo tenta alocar mais memória do que a memória disponivel no ambiente.
+
+O motivo pelo qual a indústria precisa migrar para State Space Models como o Mamba é que mesmo o FlashAttention ainda tem complexidade O(n²) de memória em relação ao tamanho da sequência, ele só otimiza o acesso à memória SRAM da GPU, mas não elimina o problema fundamental. Com 2 milhões de tokens, mesmo com todas as otimizações, a matriz de atenção seria impossível de computar. O Mamba resolve isso com complexidade O(1) de memória, ele processa tokens sequencialmente usando um estado fixo, sem precisar armazenar toda a matriz de atenção, tornando possível processar sequências arbitrariamente longas
